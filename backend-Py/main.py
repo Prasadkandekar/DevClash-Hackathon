@@ -110,18 +110,18 @@ async def analyze_resume_api(file: UploadFile = File(...), job_description: str 
 #     allow_headers=["*"],
 # )
 
-@app.get("/job-recommendations")
-def get_jobs():
-    url = "https://jsearch.p.rapidapi.com/search"
-    querystring = {"query": "developer in India", "page": "1", "num_pages": "2"}
-    headers = {
-        "X-RapidAPI-Key": os.getenv("RAPIDAPI_KEY"),
-        "X-RapidAPI-Host": "jsearch.p.rapidapi.com"
-    }
+# @app.get("/job-recommendations")
+# def get_jobs():
+#     url = "https://jsearch.p.rapidapi.com/search"
+#     querystring = {"query": "developer in India", "page": "1", "num_pages": "2"}
+#     headers = {
+#         "X-RapidAPI-Key": os.getenv("RAPIDAPI_KEY"),
+#         "X-RapidAPI-Host": "jsearch.p.rapidapi.com"
+#     }
 
-    response = requests.get(url, headers=headers, params=querystring)
-    data = response.json()
-    return {"jobs": data.get("data", [])}
+#     response = requests.get(url, headers=headers, params=querystring)
+#     data = response.json()
+#     return {"jobs": data.get("data", [])}
 
 # Optional: Run server directly
 if __name__ == "__main__":

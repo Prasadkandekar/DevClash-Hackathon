@@ -14,10 +14,9 @@ connectDB();
 
 const app = express();
 
-// ✅ CORS Config (Frontend hosted on Vercel)
 app.use(cors({
-  origin: "https://dev-clash-hackathon.vercel.app", // Replace with your frontend URL
-  credentials: true, // Needed for cookies / headers
+  origin: ["https://dev-clash-hackathon.vercel.app", "http://localhost:5173"],
+  credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));

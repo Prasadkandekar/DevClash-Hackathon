@@ -14,8 +14,13 @@ connectDB();
 
 const app = express();
 
+// Enhanced CORS configuration
 app.use(cors({
-  origin: ["https://dev-clash-hackathon.vercel.app", "http://localhost:5173"],
+  origin: [
+    "https://dev-clash-hackathon.vercel.app",
+    "https://dev-clash-hackathon-sgsj.vercel.app",
+    "http://localhost:5173"
+  ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
@@ -24,16 +29,18 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ User routes
+// User routes
 app.use("/api/users", userRoutes);
 
-// ✅ Job Recommendations Route
+// Enhanced Job Recommendations Route
 app.get("/job-recommendations", async (req, res) => {
   const url = "https://jsearch.p.rapidapi.com/search";
+  
+  // More flexible query parameters
   const queryParams = {
-    query: "developer in India",
-    page: "1",
-    num_pages: "2",
+    query: req.query.query || "developer in India",
+    page: req.query.page || "1",
+    num_pages: req.query.num_pages || "2",
   };
 
   const headers = {
@@ -47,15 +54,42 @@ app.get("/job-recommendations", async (req, res) => {
       params: queryParams,
     });
 
-    const jobs = response.data.data || [];
-    res.json({ jobs });
+    console.log("JSearch API response:", response.data); // Debug logging
+    
+    if (!response.data.data) {
+      throw new Error("No data received from JSearch API");
+    }
+
+    res.json({ 
+      success: true,
+      jobs: response.data.data 
+    });
   } catch (error) {
-    console.error("Error fetching jobs:", error.message);
-    res.status(500).json({ error: "Failed to fetch job recommendations" });
+    console.error("Full error details:", {
+      message: error.message,
+      response: error.response?.data,
+      stack: error.stack
+    });
+    
+    res.status(500).json({ 
+      success: false,
+      error: "Failed to fetch job recommendations",
+      details: error.message 
+    });
   }
 });
 
-// ✅ Server Start
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "healthy" });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error("Global error handler:", err);
+  res.status(500).json({ error: "Internal server error" });
+});
+
 app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
 });

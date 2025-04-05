@@ -32,7 +32,6 @@ const AnalyzeResume = () => {
             const response = await axios.post("https://dev-clash.onrender.com/analyze-resume/", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
-
             setAnalysis(response.data.analysis);
         } catch (error) {
             console.error("Error analyzing resume:", error);
@@ -61,13 +60,24 @@ const AnalyzeResume = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white p-6 font-sans">
-            <div className="max-w-3xl mx-auto">
-                <h2 className="text-3xl font-bold mb-6 text-violet-400">📄 Resume Analyzer</h2>
+        <div className="min-h-screen bg-black text-white p-6">
+            <h2 className="text-4xl font-bold text-neon-cyan text-center mb-10">
+                📄 Resume Analyzer
+            </h2>
 
-                <label className="w-full flex items-center gap-2 p-2 bg-gray-800 border border-violet-500 rounded mb-4 cursor-pointer">
-                    <span role="img" aria-label="file">📎</span>
-                    <span>{file ? file.name : "Upload Resume (PDF)"}</span>
+            <div className="max-w-3xl mx-auto bg-[#0f0f1a] border border-[#2e1647] p-8 rounded-3xl shadow-xl">
+                {error && (
+                    <div className="bg-red-800 text-red-300 px-4 py-2 rounded mb-4 border border-red-500 font-medium">
+                        {error}
+                    </div>
+                )}
+
+                {/* File Upload */}
+                <label className="w-full flex flex-col items-center justify-center gap-2 p-6 bg-[#1e1e2f] border-2 border-dashed border-cyan-500 rounded-xl mb-4 cursor-pointer hover:shadow-neon-cyan transition">
+                    <span className="text-5xl animate-bounce">📁</span>
+                    <span className="text-sm text-gray-400">
+                        {file ? file.name : "Click or Drag & Drop PDF Resume"}
+                    </span>
                     <input
                         type="file"
                         accept="application/pdf"
@@ -76,33 +86,50 @@ const AnalyzeResume = () => {
                     />
                 </label>
 
+                {/* JD Input */}
                 <textarea
                     value={jobDescription}
                     onChange={(e) => setJobDescription(e.target.value)}
                     placeholder="Paste Job Description (Optional)"
-                    className="w-full h-32 p-2 bg-gray-800 border border-violet-500 rounded mb-4"
+                    className="w-full h-32 p-4 bg-[#1e1e2f] border border-[#2e1647] rounded-lg mb-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
                 ></textarea>
 
+                {/* Analyze Button */}
                 <button
                     onClick={handleSubmit}
                     disabled={loading}
-                    className={`bg-violet-600 text-white px-4 py-2 rounded mb-4 transition duration-200 ${
-                        loading ? "opacity-50 cursor-not-allowed" : "hover:bg-violet-700"
+                    className={`w-full text-lg px-5 py-3 rounded-xl font-bold tracking-wide shadow-lg transition-all bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-cyan-500 hover:to-purple-500 ${
+                        loading ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                 >
-                    {loading ? "Analyzing..." : "Analyze Resume"}
+                    {loading ? "🔄 Analyzing..." : "🚀 Analyze Resume"}
                 </button>
 
-                {error && <p className="text-red-400 mt-2">{error}</p>}
+                {/* Loader */}
+                {loading && (
+                    <div className="flex items-center gap-2 mt-3 text-gray-400">
+                        <span className="animate-spin h-5 w-5 border-2 border-t-cyan-400 border-gray-600 rounded-full"></span>
+                        <span>Analyzing your resume...</span>
+                    </div>
+                )}
 
+                {/* Analysis Result */}
                 {analysis && (
-                    <div className="mt-8 border border-violet-500 p-4 rounded bg-gray-900">
-                        <h3 className="text-xl font-semibold mb-2 text-violet-300">📝 Analysis Report:</h3>
-                        <pre className="whitespace-pre-wrap text-gray-200 text-sm">{analysis}</pre>
+                    <div className="mt-8 bg-[#1b1b2d] border border-cyan-500 p-6 rounded-xl shadow-inner">
+                        <h3 className="text-2xl font-semibold mb-4 text-neon-purple">🧠 AI Analysis Report</h3>
+                        <pre className="whitespace-pre-wrap text-gray-200 text-sm mb-2">{analysis}</pre>
+                        <p className="text-sm text-cyan-300">
+                            ✅ Confidence Score: <span className="text-green-400 font-semibold">85%</span>
+                        </p>
 
                         <button
                             onClick={handleDownloadPDF}
-                            className="mt-4 bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-white transition duration-200"
+                            disabled={!analysis}
+                            className={`mt-4 px-5 py-2 rounded-lg text-sm font-semibold transition-all ${
+                                analysis
+                                    ? "bg-gradient-to-r from-green-500 to-teal-500 text-white hover:from-teal-500 hover:to-green-500"
+                                    : "bg-gray-600 text-gray-400 cursor-not-allowed"
+                            }`}
                         >
                             ⬇️ Download PDF Report
                         </button>

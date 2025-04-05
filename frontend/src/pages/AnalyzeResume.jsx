@@ -29,7 +29,7 @@ const AnalyzeResume = () => {
         setError("");
 
         try {
-            const response = await axios.post("https://dev-clash.onrender.com/analyze-resume/analyze-resume/", formData, {
+            const response = await axios.post("https://dev-clash.onrender.com/analyze-resume/", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
 

@@ -1,40 +1,34 @@
-import express from "express"
-import dotenv from "dotenv"
-import userRoutes from "./routes/userRoutes.js"
-import cookieParser from "cookie-parser"
-import cors from "cors"
-dotenv.config()
-const PORT = process.env.PORT || 3000
-import axios from "axios"
-import connectDB from "./config/db.js"
+import express from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import axios from "axios";
+import connectDB from "./config/db.js";
+import userRoutes from "./routes/userRoutes.js";
 
-connectDB()
+dotenv.config();
 
-const app = express()
+const PORT = process.env.PORT || 3000;
 
-// Change this origin when in production
-// app.use(cors({ origin: "https://dev-clash-flax.vercel.app"})) // for production
+connectDB();
 
+const app = express();
 
-// app.use(cors({ origin: "http://localhost:5173"}, )) // for Localhost
+// ✅ CORS Config (Frontend hosted on Vercel)
+app.use(cors({
+  origin: "https://dev-clash-hackathon.vercel.app", // Replace with your frontend URL
+  credentials: true, // Needed for cookies / headers
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
+app.use(express.json());
+app.use(cookieParser());
 
-// app.use(cors({
-//   origin: "https://dev-clash-flax.vercel.app/",
-//   credentials: true, // Allow cookies or Authorization headers
-//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Ensure all required methods are allowed
-//   allowedHeaders: ["Content-Type", "Authorization"] // Include necessary headers
-// }))
+// ✅ User routes
+app.use("/api/users", userRoutes);
 
-app.use(cors());
-
-
-app.use(express.json())
-
-app.use(cookieParser())
-
-app.use("/api/users", userRoutes)
-
+// ✅ Job Recommendations Route
 app.get("/job-recommendations", async (req, res) => {
   const url = "https://jsearch.p.rapidapi.com/search";
   const queryParams = {
@@ -62,6 +56,7 @@ app.get("/job-recommendations", async (req, res) => {
   }
 });
 
+// ✅ Server Start
 app.listen(PORT, () => {
-  console.log("Server listening on port: " + PORT)
-})
+  console.log(`✅ Server is running on http://localhost:${PORT}`);
+});

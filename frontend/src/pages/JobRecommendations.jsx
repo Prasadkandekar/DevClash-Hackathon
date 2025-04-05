@@ -11,7 +11,7 @@ const JobRecommendations = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await axios.get("https://dev-backend-nine.vercel.app/job-recommendations");
+        const res = await axios.get("https://dev-clash-hackathon-sgsj.vercel.app/job-recommendations");
         setJobs(res.data.jobs);
         setFilteredJobs(res.data.jobs);
         setLoading(false);

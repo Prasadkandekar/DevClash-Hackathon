@@ -126,4 +126,3 @@ def get_jobs():
 # Optional: Run server directly
 if __name__ == "__main__":
     app.run(debug=True)
-        

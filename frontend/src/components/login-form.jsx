@@ -28,7 +28,7 @@ export function LoginForm(props) {
   const handleSubmit = async (e) => {
       e.preventDefault()
       try {
-        await axios.post("https://dev-backend-nine.vercel.app/api/users/auth", {
+        await axios.post("dev-clash-hackathon-sgsj.vercel.app/api/users/auth", {
           email,
           password,
         })

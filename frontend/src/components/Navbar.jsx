@@ -15,7 +15,7 @@ const Navbar = () => {
       </div>
 
       {/* Desktop Navigation */}
-      <ul className="hidden md:flex space-x-8 text-gray-300">
+      {/* <ul className="hidden md:flex space-x-8 text-gray-300">
         {["Product", "Pricing", "Company", "Blog", "Changelog"].map((item) => (
           <li
             key={item}
@@ -24,23 +24,23 @@ const Navbar = () => {
             {item}
           </li>
         ))}
-      </ul>
+      </ul> */}
 
       {/* Login & CTA (Desktop) */}
       <div className="hidden md:flex items-center space-x-6">
         <button onClick={() => {
           navigate("/login");
-        }} className="text-gray-300 hover:text-white transition duration-300">
+        }} className="text-gray-300  hover:text-white transition duration-300">
           Login
         </button>
         <button onClick={() => {
           navigate("/register");
-        }} className="text-gray-300 hover:text-white transition duration-300">
+        }} className="text-gray-300  hover:text-white transition duration-300">
           SignUp
         </button>
-        <button className="bg-[#3a1c63] hover:bg-[#50228a] text-white py-2 px-4 rounded-lg shadow-lg transition duration-300">
+        {/* <button className="bg-[#3a1c63] hover:bg-[#50228a] text-white py-2 px-4 rounded-lg shadow-lg transition duration-300">
           Start free trial
-        </button>
+        </button> */}
       </div>
 
       {/* Mobile Menu Button */}
@@ -70,11 +70,11 @@ const Navbar = () => {
         }}className="text-gray-300 hover:text-white transition duration-300">
             Login
           </button>
-          <button onClick={() => {
+          {/* <button onClick={() => {
           navigate("/register");
         }}className="bg-[#3a1c63] hover:bg-[#50228a] text-white py-2 px-4 rounded-lg shadow-lg transition duration-300">
             Start free trial
-          </button>
+          </button> */}
         </div>
       )}
     </nav>

@@ -4,38 +4,40 @@ import { motion } from "framer-motion";
 const features = [
   {
     icon: "☁️",
-    title: "Built for speed",
-    description: "Instantly sync your notes across devices",
+    title: "Learn DSA",
+    description: "Enhance your skills with personalized learning paths",
   },
   {
     icon: "🕸️",
-    title: "Networked notes",
-    description: "Form a graph of ideas with backlinked notes",
+    title: "Resume Analyser",
+    description: "Get instant feedback on your resume and Improve ATS Score",
   },
   {
     icon: "📱",
-    title: "iOS app",
+    title: "Interactive TO-DO",
     description: "Capture ideas on the go, online or offline",
   },
   {
     icon: "🔒",
-    title: "End-to-end encryption",
-    description: "Only you can access your notes",
+    title: "Unlock Dream Jobs",
+    description: "Get personalized job recommendations based on your skills",
+    
   },
   {
     icon: "📅",
-    title: "Calendar integration",
-    description: "Keep track of meetings and agendas",
+    title: "Personalized Planner",
+    description: "Stay Organized with a Personalized planner",
   },
   {
     icon: "🚀",
-    title: "Publishing",
-    description: "Share anything you write with one click",
+    title: "Mock Interviews",
+    description: "Anayse your performance with AI-driven feedback and Get Full Report", 
   },
   {
     icon: "📥",
-    title: "Instant capture",
-    description: "Save snippets from your browser and Kindle",
+    title: "Course Recommendations",
+    description: "Get personalized course recommendations based on your skills",
+    
   },
   {
     icon: "🔍",

@@ -108,7 +108,7 @@ const PrivacyProtection = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.8 }}
       >
-        Hardened security
+        Unlock Your Dream Job
       </motion.h1>
 
       {/* Description */}
@@ -118,7 +118,7 @@ const PrivacyProtection = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
       >
-        Your data is end-to-end encrypted. No one, not even us, can see your private information. Your privacy is protected by default.
+        Finally Placed is key to your dream job. We provide personalized job recommendations based on your skills and experience, ensuring you never miss an opportunity. Our AI-driven platform analyzes your resume and matches you with the best job openings tailored just for you.
       </motion.p>
     </div>
   );

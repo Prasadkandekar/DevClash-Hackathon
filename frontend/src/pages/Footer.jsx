@@ -28,8 +28,8 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Company Info */}
             <div>
-              <h3 className="text-xl font-semibold mb-4">Dev Clash</h3>
-              <p className="text-sm">Empowering developers through competitive coding challenges.</p>
+              <h3 className="text-xl font-semibold mb-4">Finally Placed</h3>
+              <p className="text-sm">Your placement Master</p>
             </div>
 
             {/* Quick Links */}
@@ -58,7 +58,7 @@ export default function Footer() {
             <div>
               <h3 className="text-xl font-semibold mb-4">Contact</h3>
               <ul className="space-y-2">
-                <li>Email: info@devclash.com</li>
+                <li>Email: info@finallyplaced.com</li>
                 <li>Phone: +1 234 567 890</li>
                 <li>Address: Tech Hub, Innovation Street</li>
               </ul>
@@ -67,7 +67,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <div className="border-t border-gray-700 mt-12 pt-8 text-center">
-            <p>&copy; 2024 Dev Clash. All rights reserved.</p>
+            <p>&copy; 2025 @FinallyPlaced. All rights reserved.</p>
           </div>
         </div>
       </footer>

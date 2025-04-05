@@ -21,7 +21,6 @@ const features = [
     icon: "🔒",
     title: "Unlock Dream Jobs",
     description: "Get personalized job recommendations based on your skills",
-    
   },
   {
     icon: "📅",
@@ -31,13 +30,12 @@ const features = [
   {
     icon: "🚀",
     title: "Mock Interviews",
-    description: "Anayse your performance with AI-driven feedback and Get Full Report", 
+    description: "Analyze your performance with AI-driven feedback and Get Full Report", 
   },
   {
     icon: "📥",
     title: "Course Recommendations",
     description: "Get personalized course recommendations based on your skills",
-    
   },
   {
     icon: "🔍",
@@ -49,6 +47,30 @@ const features = [
 const FeaturesGrid = () => {
   return (
     <div className="min-h-screen bg-[#0a0812] text-white p-10">
+      {/* Features Heading Section */}
+      <motion.div 
+        className="text-center mb-16"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <motion.h2 
+          className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent"
+          whileHover={{ scale: 1.02 }}
+        >
+          Powerful Features
+        </motion.h2>
+        <motion.p 
+          className="text-xl text-gray-400 max-w-3xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          Everything you need to supercharge your career development
+        </motion.p>
+      </motion.div>
+
+      {/* Features Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {features.map((feature, index) => (
           <motion.div

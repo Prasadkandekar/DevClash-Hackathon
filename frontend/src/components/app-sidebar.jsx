@@ -9,6 +9,7 @@ import {
   Settings,
   HelpCircle,
   LogOut,
+  Book,
 } from "lucide-react";
 
 import {
@@ -29,6 +30,11 @@ const mainItems = [
     icon: Home,
   },
   {
+    title: "Learn DSA",
+    url: "/app/learn",
+    icon: Book,
+  },
+  {
     title: "Interview",
     url: "/app/interview",
     icon: BrainCog,
@@ -40,7 +46,7 @@ const mainItems = [
     icon: FileText,
   },
   {
-    title: "Job Recommentation",
+    title: "Job Recommentations",
     url: "/app/job",
     icon: Briefcase,
   },
@@ -137,7 +143,7 @@ export default function AppSidebar() {
           {/* Logout button */}
           <div className="mt-auto mb-4 px-4">
             <a
-              href="#"
+              href="/"
               className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-white transition-all"
             >
               <LogOut className="w-5 h-5" />

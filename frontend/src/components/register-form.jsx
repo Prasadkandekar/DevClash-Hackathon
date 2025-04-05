@@ -30,7 +30,7 @@ export function RegisterForm(props) {
     e.preventDefault()
     try {
       await axios
-        .post("https://dev-clash-hackathon.vercel.app/api/users/", {
+        .post("https://dev-clash-hackathon-sgsj.vercel.app/api/users/", {
           name,
           email,
           password,

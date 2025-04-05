@@ -28,7 +28,7 @@ export function LoginForm(props) {
   const handleSubmit = async (e) => {
       e.preventDefault()
       try {
-        await axios.post("dev-clash-hackathon-sgsj.vercel.app/api/users/auth", {
+        await axios.post("https://dev-clash-hackathon-sgsj.vercel.app/api/users/auth", {
           email,
           password,
         })
@@ -87,7 +87,7 @@ export function LoginForm(props) {
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <a href="/login" className="underline underline-offset-4">
+              <a href="/register" className="underline underline-offset-4">
                 Sign up
               </a>
             </div>

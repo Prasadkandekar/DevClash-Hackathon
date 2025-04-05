@@ -1,6 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
+import { Client, Databases, ID } from "appwrite";
+
+const client = new Client();
+client
+    .setEndpoint("https://cloud.appwrite.io/v1") // 🟡 Change if self-hosted
+    .setProject("67f196160019fd25c645"); // 🔵 Replace with your Appwrite project ID
+
+const databases = new Databases(client);
 
 const AnalyzeResume = () => {
     const [file, setFile] = useState(null);
@@ -8,6 +16,7 @@ const AnalyzeResume = () => {
     const [analysis, setAnalysis] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [resumeScore, setResumeScore] = useState(0);
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -32,7 +41,23 @@ const AnalyzeResume = () => {
             const response = await axios.post("https://dev-clash.onrender.com/analyze-resume/", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
-            setAnalysis(response.data.analysis);
+            const aiAnalysis = response.data.analysis;
+            const aiScore = response.data.score || 85; // 🟡 fallback if not returned
+
+            setAnalysis(aiAnalysis);
+            setResumeScore(aiScore);
+
+            // ✅ Save to Appwrite Database
+            await databases.createDocument(
+                "67f1a9cd0035b3cf5d56", // 🔵 Replace with your database ID
+                "67f1a9e8001271e67606", // 🔵 Replace with your collection ID
+                ID.unique(),
+                {
+                    filename: file.name,
+                    score: aiScore,
+                }
+            );
+
         } catch (error) {
             console.error("Error analyzing resume:", error);
             setError("❌ Failed to analyze the resume. Please try again.");

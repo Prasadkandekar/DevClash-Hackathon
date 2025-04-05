@@ -9,6 +9,8 @@ import RegisterPage from '@/pages/Register'
 import Dashboard from '@/pages/Dashboard'
 import JobRecommendations from '@/pages/JobRecommendations'
 import DSAContent from '@/pages/DSAcontent'
+import CodingPlatformsShowcase from '@/pages/CodingPlatformsShowcase'
+import AptitudeTest from '@/pages/AptitudeTests'
 
 function Routings() {
   return (
@@ -24,6 +26,8 @@ function Routings() {
                 <Route path="resume" element={<AnalyzeResume />} />
                 <Route path="job" element={<JobRecommendations />} />
                 <Route path="learn" element={<DSAContent />} />
+                <Route path="contests" element={<CodingPlatformsShowcase />} />
+                <Route path="aptitude" element={<AptitudeTest />} />
             </Route>
             </Routes>
         </Router>

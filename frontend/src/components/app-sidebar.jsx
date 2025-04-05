@@ -45,6 +45,15 @@ const mainItems = [
     url: "/app/resume",
     icon: FileText,
   },
+  {title: "Contests",
+    url: "/app/contests",
+    icon: Calendar,
+  },
+  {
+    title: "Aptitude Test",
+    url: "/app/aptitude",
+    icon: HelpCircle,
+  },
   {
     title: "Job Recommentations",
     url: "/app/job",

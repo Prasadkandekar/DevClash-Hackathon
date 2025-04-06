@@ -59,6 +59,11 @@ const mainItems = [
     url: "/app/job",
     icon: Briefcase,
   },
+  {
+    title: "Alumni Connect",
+    url: "/app/alumini",
+    icon: User,
+  },
 ];
 
 const generalItems = [

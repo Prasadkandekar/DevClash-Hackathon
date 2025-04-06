@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {
   Search,
   Bell,
@@ -11,7 +12,18 @@ import {
   Code,
   PlusCircle,
   ArrowUpRight,
+  Trash2,
 } from 'lucide-react';
+
+import { useEffect, useState } from "react";
+import { Client, Databases } from "appwrite";
+
+const client = new Client();
+client
+    .setEndpoint("https://cloud.appwrite.io/v1")
+    .setProject("67f196160019fd25c645");
+
+const databases = new Databases(client);
 
 function StatCard({ title, value, icon: Icon, bgColor = 'bg-purple-900/20' }) {
   return (
@@ -35,35 +47,81 @@ function SectionCard({ title, children, className = '' }) {
 }
 
 function Dashboard() {
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const res = await axios.get("https://dev-backend-nine.vercel.app/api/users/profile", {
+          withCredentials: true, // if auth cookie is needed
+          
+        });
+        setUserName(res.data.name);
+      } catch (err) {
+        console.error("Error fetching user profile:", err);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  const [resumeScore, setResumeScore] = useState(null);
+
+    useEffect(() => {
+      const fetchResumeScores = async () => {
+          try {
+              const res = await databases.listDocuments(
+                  "67f1a9cd0035b3cf5d56", // databaseId
+                  "67f1a9e8001271e67606" // collectionId
+              );
+              if (res.documents.length > 0) {
+                const latestScore = res.documents[0].score; // Replace 'score' with your actual key
+                setResumeScore(latestScore);
+              }
+          } catch (err) {
+              console.error("Error fetching resume data:", err);
+          } finally {
+              setLoading(false);
+          }
+      };
+
+      fetchResumeScores();
+  }, []);
+
+  
+
+
+  const [tasks, setTasks] = useState([
+    'Complete System Design lesson',
+    'Solve 2 DSA problems',
+    'Update portfolio website',
+    'Apply to saved jobs',
+  ]);
+  const [newTask, setNewTask] = useState('');
+
+  const addTask = () => {
+    if (newTask.trim()) {
+      setTasks([newTask.trim(), ...tasks]);
+      setNewTask('');
+    }
+  };
+
+  const removeTask = (indexToRemove) => {
+    setTasks(tasks.filter((_, i) => i !== indexToRemove));
+  };
+
   return (
+    
+
     <div className="min-h-screen bg-gradient-to-br from-[#0e0a1a] via-[#181225] to-[#0c0914] text-white">
       {/* Header */}
       <header className="bg-gradient-to-r from-[#181225]/80 to-[#0e0a1a]/80 backdrop-blur-lg border-b border-white/10 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
-              <h1 className="text-3xl font-bold text-white drop-shadow-md">👋 Welcome, Pravin!</h1>
-              <div className="relative hidden md:block">
-                <input
-                  type="text"
-                  placeholder="Search jobs, courses..."
-                  className="w-96 pl-4 pr-10 py-2 bg-black/20 text-white border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-white/60"
-                />
-                <Search className="absolute right-3 top-2.5 text-white/70" size={20} />
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <button className="p-2 hover:bg-white/10 rounded-full transition">
-                <Bell className="text-white" size={20} />
-              </button>
-              <button className="flex items-center gap-2 text-white/90 hover:bg-white/10 px-3 py-2 rounded-lg transition">
-                <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
-                  alt="Profile"
-                  className="w-8 h-8 rounded-full"
-                />
-                <ChevronDown size={20} />
-              </button>
+            <h1 className="text-3xl font-bold text-white drop-shadow-md">
+                👋 Welcome, Prasad!
+              </h1>              
             </div>
           </div>
         </div>
@@ -73,7 +131,11 @@ function Dashboard() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard title="Resume Score" value="85%" icon={Brain} />
+        <StatCard
+          title="Resume Score"
+          value={resumeScore !== null ? `${resumeScore}%` : "N/A"}
+          icon={Brain}
+        />
           <StatCard title="Interviews Given" value="12" icon={Calendar} bgColor="bg-blue-900/20" />
           <StatCard title="Interview Score" value="74%" icon={Trophy} bgColor="bg-green-900/20" />
           <StatCard title="Courses Completed" value="8" icon={BookOpen} bgColor="bg-pink-900/20" />
@@ -197,21 +259,33 @@ function Dashboard() {
           <div className="space-y-6">
             <SectionCard title="Today's Goals">
               <div className="space-y-3">
-                {[
-                  'Complete System Design lesson',
-                  'Solve 2 DSA problems',
-                  'Update portfolio website',
-                  'Apply to saved jobs',
-                ].map((task) => (
-                  <div key={task} className="flex items-center gap-3">
-                    <CheckCircle2 className="text-green-400" size={20} />
-                    <span className="text-white">{task}</span>
+                {tasks.map((task, index) => (
+                  <div key={index} className="flex items-center gap-3 justify-between">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle2 className="text-green-400" size={20} />
+                      <span className="text-white">{task}</span>
+                    </div>
+                    <button onClick={() => removeTask(index)} className="text-red-400 hover:text-red-500">
+                      <Trash2 size={16} />
+                    </button>
                   </div>
                 ))}
-                <button className="w-full mt-4 flex items-center justify-center gap-2 text-purple-200 py-2 border border-white/20 rounded-lg hover:bg-white/10 transition">
-                  <PlusCircle size={20} />
-                  Add Task
-                </button>
+                <div className="flex gap-2 mt-4">
+                  <input
+                    type="text"
+                    value={newTask}
+                    onChange={(e) => setNewTask(e.target.value)}
+                    placeholder="Add a new task"
+                    className="flex-1 bg-transparent border border-white/20 px-3 py-2 rounded-lg text-white placeholder-white/50 focus:outline-none"
+                  />
+                  <button
+                    onClick={addTask}
+                    className="flex items-center gap-2 text-purple-200 py-2 px-4 border border-white/20 rounded-lg hover:bg-white/10 transition"
+                  >
+                    <PlusCircle size={20} />
+                    Add
+                  </button>
+                </div>
               </div>
             </SectionCard>
 

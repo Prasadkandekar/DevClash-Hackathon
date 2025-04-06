@@ -12,6 +12,7 @@ import DSAContent from '@/pages/DSAcontent'
 import CodingPlatformsShowcase from '@/pages/CodingPlatformsShowcase'
 import AptitudeTest from '@/pages/AptitudeTests'
 import AlumniConnect from '@/pages/AluminiConnect'
+import Profile from '@/pages/Profile'
 
 function Routings() {
   return (
@@ -30,6 +31,7 @@ function Routings() {
                 <Route path="contests" element={<CodingPlatformsShowcase />} />
                 <Route path="aptitude" element={<AptitudeTest />} />
                 <Route path="alumini" element={<AlumniConnect />} />
+                <Route path="profile" element= {<Profile />} />
                 
             </Route>
             </Routes>

@@ -69,7 +69,7 @@ const mainItems = [
 const generalItems = [
   {
     title: "Profile",
-    url: "#",
+    url: "app/profile",
     icon: User,
   },
   {

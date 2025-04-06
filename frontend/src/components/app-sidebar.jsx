@@ -35,8 +35,8 @@ const mainItems = [
     icon: Book,
   },
   {
-    title: "Interview",
-    url: "/app/interview",
+    title: "Mock Interview Analysis",
+    url: "https://finallyplaced.vercel.app/dashboard",
     icon: BrainCog,
     active: true,
   },

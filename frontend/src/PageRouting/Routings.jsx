@@ -14,6 +14,7 @@ import AptitudeTest from '@/pages/AptitudeTests'
 import AlumniConnect from '@/pages/AluminiConnect'
 import Profile from '@/pages/Profile'
 
+
 function Routings() {
   return (
     <div>
@@ -32,6 +33,7 @@ function Routings() {
                 <Route path="aptitude" element={<AptitudeTest />} />
                 <Route path="alumini" element={<AlumniConnect />} />
                 <Route path="profile" element= {<Profile />} />
+                
                 
             </Route>
             </Routes>

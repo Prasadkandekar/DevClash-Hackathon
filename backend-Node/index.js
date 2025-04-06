@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import axios from "axios";
-import rateLimit from "express-rate-limit";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 
@@ -15,7 +14,7 @@ connectDB();
 
 const app = express();
 
-// CORS configuration
+// Enhanced CORS configuration
 app.use(cors({
   origin: [
     "https://dev-clash-hackathon.vercel.app",
@@ -33,20 +32,11 @@ app.use(cookieParser());
 // User routes
 app.use("/api/users", userRoutes);
 
-// Rate limiting middleware for job route
-const jobLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 5, // limit each IP to 5 requests per minute
-  message: {
-    success: false,
-    error: "Too many requests. Please try again later.",
-  }
-});
-
-// Job Recommendations Route with error handling
-app.get("/job-recommendations", jobLimiter, async (req, res) => {
+// Enhanced Job Recommendations Route
+app.get("/job-recommendations", async (req, res) => {
   const url = "https://jsearch.p.rapidapi.com/search";
-
+  
+  // More flexible query parameters
   const queryParams = {
     query: req.query.query || "developer in India",
     page: req.query.page || "1",
@@ -54,7 +44,7 @@ app.get("/job-recommendations", jobLimiter, async (req, res) => {
   };
 
   const headers = {
-    "X-RapidAPI-Key": process.env.RAPID_API_KEY,
+    "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
     "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
   };
 
@@ -64,6 +54,8 @@ app.get("/job-recommendations", jobLimiter, async (req, res) => {
       params: queryParams,
     });
 
+    console.log("JSearch API response:", response.data); // Debug logging
+    
     if (!response.data.data) {
       throw new Error("No data received from JSearch API");
     }
@@ -73,35 +65,26 @@ app.get("/job-recommendations", jobLimiter, async (req, res) => {
       jobs: response.data.data 
     });
   } catch (error) {
-    const status = error.response?.status || 500;
-    const message = error.response?.data?.message || error.message;
-
-    // Forward Retry-After header if present
-    if (error.response?.headers?.['retry-after']) {
-      res.set('Retry-After', error.response.headers['retry-after']);
-    }
-
     console.error("Full error details:", {
-      message,
+      message: error.message,
       response: error.response?.data,
-      status,
       stack: error.stack
     });
-
-    res.status(status).json({ 
+    
+    res.status(500).json({ 
       success: false,
       error: "Failed to fetch job recommendations",
-      details: message
+      details: error.message 
     });
   }
 });
 
-// Health check
+// Health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "healthy" });
 });
 
-// Global error handler
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error("Global error handler:", err);
   res.status(500).json({ error: "Internal server error" });

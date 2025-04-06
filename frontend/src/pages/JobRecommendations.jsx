@@ -13,18 +13,38 @@ const JobRecommendations = () => {
       try {
         setLoading(true);
         setError(null);
-
-        const res = await axios.get("https://remotive.io/api/remote-jobs", {
-          params: {
-            search: "developer"
+        
+        const res = await axios.get(
+          "https://dev-clash-hackathon-sgsj.vercel.app/job-recommendations",
+          {
+            params: {
+              query: "developer in India",
+              page: "1",
+              num_pages: "2"
+            }
           }
-        });
+        );
 
-        setJobs(res.data.jobs);
-        setFilteredJobs(res.data.jobs);
+        console.log("API Response:", res.data); // Debug logging
+
+        if (!res.data.success) {
+          throw new Error(res.data.error || "Failed to load jobs");
+        }
+
+        if (!res.data.jobs || res.data.jobs.length === 0) {
+          setError("No jobs found");
+        } else {
+          setJobs(res.data.jobs);
+          setFilteredJobs(res.data.jobs);
+        }
       } catch (err) {
-        console.error("Error fetching jobs:", err);
-        setError("Failed to fetch job recommendations.");
+        console.error("Error details:", {
+          message: err.message,
+          response: err.response?.data,
+          stack: err.stack
+        });
+        
+        setError(err.response?.data?.error || err.message || "Failed to load jobs");
       } finally {
         setLoading(false);
       }
@@ -38,9 +58,10 @@ const JobRecommendations = () => {
     setSearch(value);
 
     const filtered = jobs.filter((job) =>
-      job.title?.toLowerCase().includes(value) ||
-      job.company_name?.toLowerCase().includes(value) ||
-      job.candidate_required_location?.toLowerCase().includes(value)
+      job.job_title?.toLowerCase().includes(value) ||
+      job.employer_name?.toLowerCase().includes(value) ||
+      job.job_city?.toLowerCase().includes(value) ||
+      job.job_country?.toLowerCase().includes(value)
     );
 
     setFilteredJobs(filtered);
@@ -76,9 +97,9 @@ const JobRecommendations = () => {
     <div className="min-h-screen bg-[#f9fafb] p-6 space-y-10">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-800">💼 Remote Job Recommendations</h1>
+        <h1 className="text-3xl font-bold text-gray-800">💼 Recommended Jobs for You</h1>
         <p className="text-gray-600 mt-2">
-          Browse through remote developer jobs matching your skills
+          Browse through the latest job opportunities matching your profile
         </p>
       </div>
 
@@ -102,28 +123,32 @@ const JobRecommendations = () => {
               className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition hover:border-purple-200"
             >
               <h2 className="text-xl font-semibold text-purple-700 mb-1">
-                {job.title || "No title available"}
+                {job.job_title || "No title available"}
               </h2>
               <p className="text-gray-600 mb-1">
-                <strong>{job.company_name || "Unknown company"}</strong>
-                {job.candidate_required_location && ` • ${job.candidate_required_location}`}
+                <strong>{job.employer_name || "Unknown company"}</strong>
+                {job.job_city && ` • ${job.job_city}`}
+                {job.job_country && `, ${job.job_country}`}
               </p>
               <p className="text-sm text-gray-500">
-                Category: {job.category} | Type: {job.job_type}
+                {job.job_employment_type && `Type: ${job.job_employment_type}`}
+                {job.job_posted_at_datetime_utc && (
+                  <>
+                    {job.job_employment_type && " | "}
+                    Posted: {new Date(job.job_posted_at_datetime_utc).toLocaleDateString()}
+                  </>
+                )}
               </p>
-              {job.publication_date && (
-                <p className="text-xs text-gray-400 mt-1">
-                  Posted: {new Date(job.publication_date).toLocaleDateString()}
-                </p>
+              {job.job_apply_link && (
+                <a
+                  href={job.job_apply_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md text-sm font-medium transition-colors"
+                >
+                  Apply Now
+                </a>
               )}
-              <a
-                href={job.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md text-sm font-medium transition-colors"
-              >
-                Apply Now
-              </a>
             </div>
           ))
         ) : (

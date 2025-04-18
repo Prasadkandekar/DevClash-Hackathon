@@ -17,6 +17,7 @@ const app = express();
 // Enhanced CORS configuration
 app.use(cors({
   origin: [
+    "*",
     "https://dev-clash-hackathon.vercel.app",
     "https://dev-clash-hackathon-sgsj.vercel.app",
     "http://localhost:5173"
